@@ -18,9 +18,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           data={chatRoomsData}
           renderItem={({ item }) => <ChatRoomItem chatRoom={item} />}
         />
-       
-
-        
+              
 
       </View>  
   );
