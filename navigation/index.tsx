@@ -10,16 +10,23 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
+
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+
 import NotFoundScreen from '../screens/NotFoundScreen';
+import ModalScreen from '../screens/ModalScreen';
+
 import TabOneScreen from '../screens/HomeScreen';
+import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
+
+
 import TabTwoScreen from '../screens/TabTwoScreen';
+
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
-import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
 
 
 
@@ -42,8 +49,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ChatRoom" component={ChatRoomScreen} options={{ headerShown: true }} /> 
+  
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="ChatRoom" component={ChatRoomScreen} options={{ headerShown: true }} /> 
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -72,7 +80,7 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Chats',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="chatbox-ellipses-outline" size={30} color="black" />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}

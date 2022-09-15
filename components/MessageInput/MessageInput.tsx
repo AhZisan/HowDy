@@ -1,20 +1,52 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
-import React, { useState} from 'react'
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TextInput, 
+    Pressable, 
+    KeyboardAvoidingView, 
+    Platform 
+} from 'react-native'
+
+import React, { useState,} from 'react'
 import { SimpleLineIcons, Feather, MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 
 
 const MessageInput = () => {
     const [message, setMessage] = useState('');
 
+    const sendMessages = () => {
+        //Send message
+        console.warn("sending:", message);
+
+        setMessage('');
+    }
+
+    const onPlusClicked = () =>{
+        console.warn("clicked on add");
+    }
+
    const OnPrs= () => {
-    console.warn(message);
+    // console.warn(message);
+    if (message) {
+        sendMessages();
+    }
+    else {
+        onPlusClicked();
+    }
+
+
    }
 
 
   return (
-    <View style={styles.root}>
-      <View style={styles.inputContainer}>
-        <SimpleLineIcons name="emotsmile" size={24} color="#595959" style={styles.icon}/>
+    <KeyboardAvoidingView 
+        style={styles.root} 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={95}
+    >
+        <View style={styles.inputContainer}>
+         <SimpleLineIcons name="emotsmile" size={24} color="#595959" style={styles.icon}/>
         
         <TextInput 
         style={styles.input}
@@ -29,7 +61,7 @@ const MessageInput = () => {
       <Pressable onPress={OnPrs}style={styles.buttonContainer}>
       {message ? <Ionicons name="send" size={18} color="white" /> : <AntDesign name="plus" size={22} color="white" />}
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
