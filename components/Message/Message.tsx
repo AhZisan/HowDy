@@ -10,7 +10,7 @@ const myId = 'u1';
 
 const Message = ({ message }) => {
 
-    const isMe = message.user.id == myId;
+    const isMe = message.user.id == myId; //checking with my id
 
   return (
     <View style={[styles.container, isMe ? styles.rightContainer : styles.leftContainer ]}>

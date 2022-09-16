@@ -11,7 +11,7 @@ import chatRoomsData from '../assets/dummy-data/ChatRooms';
 
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function HomeScreen() {
   return (
       <View style={styles.page}>
         <FlatList 

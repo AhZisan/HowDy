@@ -5,27 +5,33 @@
  */
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, TabActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, Text, Image, View, useWindowDimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
+import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
-import ModalScreen from '../screens/ModalScreen';
+import ShareScreen from '../screens/ShareScreen';
 
-import TabOneScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
 
 
-import TabTwoScreen from '../screens/TabTwoScreen';
+import Contacts from '../screens/Contacts';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
 
 
 
@@ -50,71 +56,131 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
   
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="ChatRoom" component={ChatRoomScreen} options={{ headerShown: true }} /> 
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+      <Stack.Screen 
+          name="Chats"
+          component={TabNavigator}
+          options={{ headerTitle: HomeHeader, }}
+          />
+       
+      <Stack.Group screenOptions={{ presentation: "card" }}>
+      <Stack.Screen 
+        name="ChatRoom" 
+        component={ChatRoomScreen} 
+        options={{ 
+          headerTitle: ChatRoomHeader, 
+          headerBackTitleVisible: false
+        }} 
+      />
       </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="Share" component={ShareScreen} />
+      </Stack.Group>
+
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
 
+const HomeHeader = (props) => {
+
+  const { width} = useWindowDimensions();
+  const navigation = useNavigation();
   return (
-    <BottomTab.Navigator
-      initialRouteName="TabOne"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+    
+    <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginRight: 62,
+        width,
+        
       }}>
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Chats',
-          tabBarIcon: ({ color }) => <Ionicons name="chatbox-ellipses-outline" size={30} color="black" />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
+      <Image 
+        source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
+        style= {{ width: 37, height: 37, borderRadius: 20, marginLeft: 8}}
+      />
+      <Text style= {{flex: 1, textAlign: 'center', marginLeft: 35 , fontWeight: 'bold', fontSize:18 }}>Chats</Text>
+      <Feather name="search" size={25} color="black"  />
+
+      <Pressable
+              onPress={() => navigation.navigate('Share')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
+                <MaterialIcons name="wifi-tethering" 
+                size={28} color="black" 
+                style={{marginHorizontal: 13}}
               />
             </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-}
+    </View>
+  )
+};
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-}
+const ChatRoomHeader = (props) => {
+
+  const { width} = useWindowDimensions();
+  const navigation = useNavigation();
+  return (
+    
+    <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginRight: 65,
+        width: -50,
+
+        
+      }}>
+      <Image 
+        source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
+        style= {{ width: 37, height: 37, borderRadius: 20, position: 'absolute'}}
+      />
+      <Text style= {{flex: 1, marginLeft: 45 , fontWeight: 'bold', fontSize:18 }}>{props.children}</Text>
+      <Feather name="video" size={24} color="black" style={{ marginRight:10}}/>
+      <Ionicons name="ios-call-outline" size={24} color="black" style={{ margin:5}}/>
+      <MaterialCommunityIcons name="dots-vertical" size={24} color="black" style={{ marginRight:2}}/>
+  
+    </View>
+  )
+};
+
+
+const HomeTabs = createBottomTabNavigator();
+
+const TabNavigator = () => (
+  
+    <HomeTabs.Navigator     
+    screenOptions={{
+      headerShown: false,
+      // tabBarShowLabel: false,
+      tabBarLabelStyle:{fontWeight:'bold', fontSize: 10},
+      tabBarActiveTintColor: '#09B83E'
+      
+    }}>
+      
+    <HomeTabs.Screen 
+      name='Chats' 
+      component={HomeScreen}
+      options={{
+        tabBarIcon: ({ color }) => 
+            <AntDesign name="message1" size={22} color={color} />,
+           }}
+       
+    />
+
+    <HomeTabs.Screen 
+      name='Contacts' 
+      component={Contacts}
+      options={{
+        tabBarIcon: ({ color }) => 
+            <AntDesign name="contacts" size={22} color={color} />,
+           }}
+    />
+   </HomeTabs.Navigator>
+
+
+);
+

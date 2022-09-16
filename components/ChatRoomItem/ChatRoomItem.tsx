@@ -11,7 +11,8 @@ export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation();
 
     const OnPrs = () => {
-      navigation.navigate('ChatRoom');
+      navigation.navigate('ChatRoom', { id: chatRoom.id});
+
     }
 
     return(
