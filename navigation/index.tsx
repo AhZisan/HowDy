@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, TabActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable, Text, Image, View, useWindowDimensions } from 'react-native';
+import { ColorSchemeName, Pressable, Text, Image, View, useWindowDimensions, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -59,13 +59,15 @@ function RootNavigator() {
           options={{ headerTitle: HomeHeader, }}
           />
        
-      <Stack.Group screenOptions={{ presentation: "card" }}>
+      <Stack.Group screenOptions={{ presentation: "card" ,}}>
       <Stack.Screen 
         name="ChatRoom" 
         component={ChatRoomScreen} 
         options={{ 
           headerTitle: ChatRoomHeader, 
-          headerBackTitleVisible: false
+          headerBackTitleVisible: false,
+
+          
         }} 
       />
       </Stack.Group>
@@ -133,12 +135,12 @@ const ChatRoomHeader = (props) => {
       }}>
       <Image 
         source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
-        style= {{ width: 37, height: 37, borderRadius: 20, position: 'absolute'}}
+        style= {{ width: 35, height: 35, borderRadius: 20, marginLeft: Platform.OS === "android" ? -20 : 5}}
       />
-      <Text style= {{flex: 1, marginLeft: 45 , fontWeight: 'bold', fontSize:18 }}>{props.children}</Text>
+      <Text style= {{flex: 1, marginLeft: 12 , fontWeight: 'bold', fontSize:18 }}>{props.children}</Text>
       <Feather name="video" size={24} color="black" style={{ marginRight:10}}/>
       <Ionicons name="ios-call-outline" size={24} color="black" style={{ margin:5}}/>
-      <MaterialCommunityIcons name="dots-vertical" size={24} color="black" style={{ marginRight:2}}/>
+      <MaterialCommunityIcons name="dots-vertical" size={24} color="black" style={{ marginRight: Platform.OS === "android" ? 13 : -5}}/>
   
     </View>
   )
