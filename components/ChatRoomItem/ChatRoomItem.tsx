@@ -29,7 +29,11 @@ export default function ChatRoomItem({ chatRoom }) {
             <Text style={styles.text}>{chatRoom.lastMessage.createdAt}</Text>
           </View>
 
-          <Text numberOfLines={1} style={styles.text}>{chatRoom.lastMessage.content}</Text>
+          <Text numberOfLines={1} style={{
+                color : chatRoom.newMessages ? '#ff9f00' : 'gray',
+                fontWeight: chatRoom.newMessages ? 'bold': 'normal'
+            }}>{chatRoom.lastMessage.content}</Text>
+
         </View>       
       </Pressable>
     );

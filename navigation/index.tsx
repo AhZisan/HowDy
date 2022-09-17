@@ -3,7 +3,6 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, TabActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,8 +16,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import ShareScreen from '../screens/ShareScreen';
@@ -157,7 +154,7 @@ const TabNavigator = () => (
       headerShown: false,
       // tabBarShowLabel: false,
       tabBarLabelStyle:{fontWeight:'bold', fontSize: 10},
-      tabBarActiveTintColor: '#09B83E'
+      tabBarActiveTintColor: '#ff7e00'
       
     }}>
       

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
       marginRight: 10,
     },
     badgeContainer:{
-      backgroundColor: '#3777f0',
+      backgroundColor: '#ff7518',  //#3777f0
       width: 20,
       height: 20,
       borderRadius: 10,
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   
     },
     text: {
+      
       color: 'gray',
     }
     

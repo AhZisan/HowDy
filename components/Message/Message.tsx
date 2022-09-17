@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
-const blue = '#3777f0';
+const orange = '#ff7518'; //#3777f0
 const gray = 'lightgray';
 
 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 
     },
     leftContainer: {
-        backgroundColor:blue,
+        backgroundColor:orange,
         marginLeft: 10,
         marginRight: 'auto',
     },
