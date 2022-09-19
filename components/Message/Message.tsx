@@ -15,7 +15,7 @@ const Message = ({ message }) => {
   return (
     <View style={[styles.container, isMe ? styles.rightContainer : styles.leftContainer ]}>
       
-      <Text style={{fontSize: Platform.OS === 'ios' ? 15 : null ,color : isMe ? 'black' : 'white'}}>{message.content}</Text>
+      <Text style={{fontSize: Platform.OS === 'ios' ? 15 : null , color : isMe ? 'black' : 'white'}}>{message.content}</Text>
     </View>
   )
 }

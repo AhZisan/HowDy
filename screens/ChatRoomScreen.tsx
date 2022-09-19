@@ -7,6 +7,8 @@ import Message from '../components/Message';
 import chatRoomData from '../assets/dummy-data/Chats';
 import MessageInput from '../components/MessageInput';
 import Navigation from '../navigation';
+import React from 'react';
+import AttachSection from '../components/AttachSection';
 
 
 export default function ChatRoomScreen() {
@@ -25,7 +27,7 @@ export default function ChatRoomScreen() {
                 renderItem={({ item }) => <Message message={item} />}
                 inverted              
              />
-            <MessageInput />      
+            <MessageInput />  
 
         </SafeAreaView>               
     ) 

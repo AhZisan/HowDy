@@ -22,6 +22,7 @@ import ShareScreen from '../screens/ShareScreen';
 
 import HomeScreen from '../screens/HomeScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
+import FastShareFTF from '../screens/FastShareFTF';
 
 
 import Contacts from '../screens/Contacts';
@@ -66,11 +67,11 @@ function RootNavigator() {
         options={{ 
           headerTitle: ChatRoomHeader, 
           headerBackTitleVisible: false,
-
-          
         }} 
       />
       </Stack.Group>
+
+      <Stack.Screen name='FastShareFTF' component={FastShareFTF}/>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Share" component={ShareScreen} />
