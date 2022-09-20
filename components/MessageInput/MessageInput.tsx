@@ -30,6 +30,8 @@ const MessageInput = () => {
     }
 
     const [shouldShowAttach, setShouldShowAttach] = useState(false);
+  
+
     const [isEmoOn,setEmoOn] = useState(false);
   
 
