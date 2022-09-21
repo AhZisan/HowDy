@@ -30,7 +30,7 @@ const AttachSection = () => {
             <MaterialCommunityIcons name="file-video-outline" size={50} color="#404040" style={styles.items}/>
             <Feather name="folder" size={50} color="#404040" style={styles.items}/>
             
-            <Pressable onPress={() => navigation.navigate('FastShareFTF')}>
+            <Pressable onPress={() => navigation.navigate('FastShareRoom')}>
                 <MaterialCommunityIcons name="rocket-launch-outline" size={50} color="#404040" style={styles.items}/>
             </Pressable>
             

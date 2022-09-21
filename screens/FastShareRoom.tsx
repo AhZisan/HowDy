@@ -1,13 +1,14 @@
+import React from 'react';
 import Rect from 'react';
 import { Text, View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import FastShareRoomItems from '../components/FastShareRoom';
 
 
 export default function FastShareFTF() {
     return(
         <SafeAreaView style={styles.container}>
-            <View>
-                <Text> Fast share </Text>
-            </View>
+            <FastShareRoomItems />
+            
 
         </SafeAreaView>
 
@@ -17,8 +18,7 @@ export default function FastShareFTF() {
 
 const styles = StyleSheet.create({
     container: {
-        height: 40,
-        width: 40
+
     }
 
 
