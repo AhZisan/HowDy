@@ -23,12 +23,16 @@ import ShareScreen from '../screens/ShareScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
 import FstShrRoom from '../screens/FastShareRoom';
+import LogIn from '../screens/LogInScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 
 import Contacts from '../screens/Contacts';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+
 
 
 
@@ -53,7 +57,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-  
+
+      <Stack.Screen name="Login" component={LogIn} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      
       <Stack.Screen 
           name="Chats"
           component={TabNavigator}
