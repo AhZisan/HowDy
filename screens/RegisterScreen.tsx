@@ -1,14 +1,6 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
-import { signInWithEmail } from "../firebase";
-// import { auth } from '../firebase';
-// import { connectAuthEmulator } from 'firebase/auth';
+import { Button, Input, Text } from "@rneui/base";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -16,20 +8,7 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const register = () => {
-    // auth
-    // .createUserWithEmailAndPassword(email,password)
-    // .then(authUser => {
-    //     authUser.user?.updateProfile({
-    //         displayName: name,
-    //         photoURL: imageUrl ||
-    //         "https://engage.eiturbanmobility.eu/decidim-packs/media/images/default-avatar-aaa9e55bac5d7159b847.svg"
-    //     });
-    // })
-    // .catch((error) => alert(error.message));
-
-    signInWithEmail(email, password);
-  };
+  const register = () => {};
 
   return (
     <KeyboardAvoidingView
@@ -40,42 +19,42 @@ const RegisterScreen = ({ navigation }) => {
         Create an Howdy account
       </Text>
 
-      {/* <View style={styles.inputCon}>
-          <Input
-            placeholder="Full Name"
-            autoFocus
-            textContentType="name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <Input
-            placeholder="Email"
-            textContentType="emailAddress"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <Input
-            placeholder="Password"
-            textContentType="password"
-            secureTextEntry
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-          <Input
-            placeholder="Profile Picture URL (optional)"
-            textContentType="URL"
-            value={imageUrl}
-            onChangeText={(text) => setImageUrl(text)}
-            onSubmitEditing={register}
-          />
-        </View>
-  
-        <Button
-          containerStyle={styles.button}
-          raised
-          onPress={register}
-          title="Register"
-        /> */}
+      <View style={styles.inputCon}>
+        <Input
+          placeholder="Full Name"
+          autoFocus
+          textContentType="name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
+        <Input
+          placeholder="Email"
+          textContentType="emailAddress"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <Input
+          placeholder="Password"
+          textContentType="password"
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Input
+          placeholder="Profile Picture URL (optional)"
+          textContentType="URL"
+          value={imageUrl}
+          onChangeText={(text) => setImageUrl(text)}
+          onSubmitEditing={register}
+        />
+      </View>
+
+      <Button
+        containerStyle={styles.button}
+        raised
+        onPress={register}
+        title="Register"
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -96,11 +75,5 @@ const styles = StyleSheet.create({
   button: {
     width: 250,
     marginTop: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
 });

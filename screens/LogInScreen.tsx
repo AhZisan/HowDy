@@ -5,33 +5,16 @@ import {
   View,
   Image,
   Platform,
-  TextInput,
-  Button,
 } from "react-native";
-// import { Button, Input } from '@rneui/base';
+import { Button, Input } from "@rneui/base";
 import React, { useEffect, useState } from "react";
-import { signInWithEmail } from "../firebase";
-// import { auth } from '../firebase';
 // import { Input } from '@rneui/themed';
 
 const LogIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // useEffect(() => {
-  //     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-  //         console.log(authUser);
-  //         if (authUser) {
-  //             navigation.replace("Chats");
-  //         }
-  //     });
-
-  //     return unsubscribe;
-  // }, []);
-
-  const SignIn = () => {
-    signInWithEmail(email, password);
-  };
+  const SignIn = () => {};
 
   return (
     <KeyboardAvoidingView
@@ -46,22 +29,15 @@ const LogIn = ({ navigation }) => {
       />
 
       <View style={styles.inputCon}>
-        {/* <Input
-              placeholder='Email' autoFocus 
-              textContentType='emailAddress'
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-           /> */}
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setEmail(text)}
+        <Input
+          placeholder="Email"
+          autoFocus
+          textContentType="emailAddress"
           value={email}
-          placeholder="useless placeholder"
-          keyboardType="numeric"
+          onChangeText={(text) => setEmail(text)}
         />
 
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Password"
           secureTextEntry={true}
           textContentType="password"
@@ -71,14 +47,14 @@ const LogIn = ({ navigation }) => {
       </View>
       <Button
         color="#ff7e00"
-        // style={styles.button}
+        containerStyle={styles.button}
         onPress={SignIn}
         title="Login"
       />
 
       <Button
         onPress={() => navigation.navigate("Register")}
-        // style={styles.button}
+        containerStyle={styles.button}
         type="clear"
         title="Register"
       />
@@ -102,11 +78,5 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     marginTop: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
 });
