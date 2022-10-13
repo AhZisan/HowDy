@@ -10,6 +10,8 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable, Text, Image, View, useWindowDimensions, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
+
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -17,20 +19,24 @@ import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import NotFoundScreen from '../screens/NotFoundScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import ShareScreen from '../screens/ShareScreen';
+
 
 import HomeScreen from '../screens/HomeScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
 import FstShrRoom from '../screens/FastShareRoom';
-import LogIn from '../screens/LogInScreen';
-import RegisterScreen from '../screens/RegisterScreen';
+
+// import LogIn from '../screens/LogInScreen';
+// import RegisterScreen from '../screens/RegisterScreen';
 
 
 import Contacts from '../screens/Contacts';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+
 
 
 
@@ -58,9 +64,9 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
 
-      <Stack.Screen name="Login" component={LogIn} />
+      {/* <Stack.Screen name="Login" component={LogIn} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-      
+       */}
       <Stack.Screen 
           name="Chats"
           component={TabNavigator}
@@ -82,9 +88,9 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Share" component={ShareScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen}  />
       </Stack.Group>
-
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      
     </Stack.Navigator>
   );
 }
@@ -105,11 +111,16 @@ const HomeHeader = (props) => {
         width,
         
       }}>
-      <Image 
-        source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
-        style= {{ width: 37, height: 37, borderRadius: 20, marginLeft: 8}}
-      />
-      <Text style= {{flex: 1, textAlign: 'center', marginLeft: 35 , fontWeight: 'bold', fontSize:18 }}>Chats</Text>
+
+      <Pressable
+              onPress={() => navigation.navigate('Profile')}>
+              <Image 
+                source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
+                style= {{ width: 37, height: 37, borderRadius: 20, marginLeft: 8, marginBottom: Platform.OS === "ios" ? 5 : undefined}}
+              />
+      </Pressable>
+
+      <Text style= {{flex: 1, textAlign: 'center', marginLeft: 35 , fontWeight: 'bold', fontSize:18 }}>Howdy</Text>
       <Feather name="search" size={25} color="black"  />
 
       <Pressable

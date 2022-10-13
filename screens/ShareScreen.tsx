@@ -23,12 +23,6 @@ const styles = StyleSheet.create({
   },
 
 
-
-
-
-
-
-
 }) 
 
 
