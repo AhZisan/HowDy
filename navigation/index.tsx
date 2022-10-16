@@ -1,8 +1,3 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, TabActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,31 +5,29 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable, Text, Image, View, useWindowDimensions, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
-
 import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-
 
 import ProfileScreen from '../screens/ProfileScreen';
 import ShareScreen from '../screens/ShareScreen';
 
-
 import HomeScreen from '../screens/HomeScreen';
+import Contacts from '../screens/Contacts';
 import ChatRoomScreen from '../screens/ChatRoomScreen'; //////////////
 import FstShrRoom from '../screens/FastShareRoom';
+
+import ChatRoomHeader from './ChatRoomHeader';
 
 // import LogIn from '../screens/LogInScreen';
 // import RegisterScreen from '../screens/RegisterScreen';
 
 
-import Contacts from '../screens/Contacts';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+// import { color } from '@rneui/base';
+// import Colors from '../constants/Colors';
 
 
 
@@ -68,19 +61,26 @@ function RootNavigator() {
       <Stack.Screen name="Register" component={RegisterScreen} />
        */}
       <Stack.Screen 
-          name="Chats"
+          name="ChatItems"
           component={TabNavigator}
-          options={{ headerTitle: HomeHeader, }}
+          options={{ headerTitle: HomeHeader,
+            headerStyle:{ 
+            backgroundColor: 'white'},
+           }}
           />
        
       <Stack.Group screenOptions={{ presentation: "card" ,}}>
       <Stack.Screen 
         name="ChatRoom" 
         component={ChatRoomScreen} 
-        options={{ 
-          headerTitle: ChatRoomHeader, 
+        options={({ route }) => ({ 
+          headerTitle: () => <ChatRoomHeader id= {route.params?.id}/>, 
           headerBackTitleVisible: false,
-        }} 
+          headerStyle:{ 
+            backgroundColor: 'white'
+          }
+          
+        })} 
       />
       </Stack.Group>
 
@@ -137,33 +137,6 @@ const HomeHeader = (props) => {
   )
 };
 
-const ChatRoomHeader = (props) => {
-
-  const { width} = useWindowDimensions();
-  const navigation = useNavigation();
-  return (
-    
-    <View style={{ 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginRight: 65,
-        width: -50,
-
-        
-      }}>
-      <Image 
-        source={{uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg'}}
-        style= {{ width: 35, height: 35, borderRadius: 20, marginLeft: Platform.OS === "android" ? -20 : 5}}
-      />
-      <Text style= {{flex: 1, marginLeft: 12 , fontWeight: 'bold', fontSize:18 }}>{props.children}</Text>
-      <Feather name="video" size={24} color="black" style={{ marginRight:10}}/>
-      <Ionicons name="ios-call-outline" size={24} color="black" style={{ margin:5}}/>
-      <MaterialCommunityIcons name="dots-vertical" size={24} color="black" style={{ marginRight: Platform.OS === "android" ? 13 : -5}}/>
-  
-    </View>
-  )
-};
 
 
 const HomeTabs = createBottomTabNavigator();
@@ -175,7 +148,10 @@ const TabNavigator = () => (
       headerShown: false,
       // tabBarShowLabel: false,
       tabBarLabelStyle:{fontWeight:'bold', fontSize: 10},
-      tabBarActiveTintColor: '#ff7e00'
+      tabBarActiveTintColor: '#ff7e00',
+
+      tabBarStyle:{backgroundColor: 'white'}
+
       
     }}>
       

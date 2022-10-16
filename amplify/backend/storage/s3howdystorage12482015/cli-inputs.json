@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3howdystorage12482015",
+  "bucketName": "howdy-storage-12482015",
+  "policyUUID": "9dd46eb5",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ]
+}

@@ -1,106 +1,251 @@
-import { 
-    View, 
-    Text, 
-    StyleSheet, 
-    TextInput, 
-    Pressable, 
-    KeyboardAvoidingView, 
-    Platform 
+import {
+    View,
+    StyleSheet,
+    TextInput,
+    Pressable,
+    KeyboardAvoidingView,
+    Platform,
+    Image
 } from 'react-native'
 
+import * as ImagePicker from 'expo-image-picker';
+import { v4 as uuidv4 } from 'uuid';
 
-import React, { useState,} from 'react'
+import { Auth, DataStore, Storage } from 'aws-amplify';
+import { ChatRoom, Message } from '../../src/models';
+
+
+import React, { useState, useEffect } from 'react'
 import EmojiSelector from 'react-native-emoji-selector'
 import { SimpleLineIcons, Feather, MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 
+
 import AttachSection from '../AttachSection';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
 
-const MessageInput = () => {
+const MessageInput = ({ chatRoom }) => {
     const [message, setMessage] = useState('');
+    const [shouldShowAttach, setShouldShowAttach] = useState(false);
+    const [isEmoOn, setEmoOn] = useState(false);
+    const [progress, setProgress] = useState(0);
 
-    const sendMessages = () => {
+    // useEffect(() => {
+    //     (async () => {
+    //         if (Platform.OS !== 'web') {
+    //             const libraryResponse = 
+    //                 await ImagePicker.requestMediaLibraryPermissionsAsync();
+    //             const photoResponse = await ImagePicker.requestCameraPermissionsAsync();
+
+    //             if (
+    //                 libraryResponse.status !== "granted" || 
+    //                 photoResponse.status !== "granted"
+    //                 ) {
+    //                 alert("Sorry, we need camera roll permission to make this work!")
+    //             }
+    //         }
+    //     })();
+    // }, []);
+
+
+
+    const sendMessages = async () => {
         //Send message
-        console.warn("sending:", message);
+        const user = await Auth.currentAuthenticatedUser();
+        const newMessage = await DataStore.save(new Message({
+            content: message,
+            userID: user.attributes.sub,
+            chatroomID: chatRoom.id,
+        }));
+
+        updateLastMessage(newMessage);
+
+        resetFields();
+    };
+
+    const updateLastMessage = async (newMessage) => {
+        DataStore.save(ChatRoom.copyOf(chatRoom, updatedChatRoom => {
+            updatedChatRoom.LastMessages = newMessage;
+        }));
+    };
+
+
+
+
+    const onPlusClicked = () => {
+        setShouldShowAttach(!shouldShowAttach);
+        setEmoOn(false);
+    };
+
+
+
+    const OnPrs = () => {
+        // console.warn(message);
+        if (image) {
+            sendImage();
+        }
+        else if (message) {
+            sendMessages();
+        }
+        else {
+            onPlusClicked();
+        }
+    };
+
+    const resetFields = () => {
 
         setMessage('');
         setEmoOn(false);
         setShouldShowAttach(false);
+        setImage(null);
+        setProgress(0);
     }
 
-    const [shouldShowAttach, setShouldShowAttach] = useState(false);
-  
+    // Image Picker
+    const [image, setImage] = useState<string | null>(null);
 
-    const [isEmoOn,setEmoOn] = useState(false);
-  
 
-    const onPlusClicked = () =>{
-        
-            setShouldShowAttach(!shouldShowAttach)
-
+    const takePhoto = async () => {
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            aspect: [4, 3],
+        })
+        if (!result.cancelled) {
+            setImage(result.uri);
         }
+    };
 
+    /////////////////// Image send progress ///////////////
 
+    const progressCallback = (progress) => {
+        console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+        setProgress(progress.loaded / progress.total);
+    };
 
-   const OnPrs= () => {
-    // console.warn(message);
-    if (message) {
-        sendMessages();
+    /////////// uploading & send image to the S3 storage ///////////////
+    const sendImage = async () => {
+        if (!image) {
+            return;
+        }
+        const blob = await getImageBlob();
+        const { key } = await Storage.put(`${uuidv4()}.png`, blob, { progressCallback });
+
+        ///////////////// send image /////////////////////////
+        const user = await Auth.currentAuthenticatedUser();
+        const newMessage = await DataStore.save(new Message({
+            content: message,
+            image: key,
+            userID: user.attributes.sub,
+            chatroomID: chatRoom.id,
+        }));
+
+        updateLastMessage(newMessage);
+
+        resetFields();
+    };
+
+    const getImageBlob = async () => {
+        if (!image) {
+            return null;
+        }
+        const response = await fetch(image);
+        const blob = await response.blob();
+        return blob;
     }
-    else {
-        onPlusClicked();
-    }   
-}
 
 
-  return (
-    <KeyboardAvoidingView 
-        style={[styles.root, {height: isEmoOn ? "52%" : "auto" }]} 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={95}
-    >
-        <View style={styles.row}>
-        <View style={styles.inputContainer}>
-         
-         <Pressable onPress={() => setEmoOn((currentValue) => !currentValue)}>
+    return (
+        <KeyboardAvoidingView
+            style={[styles.root, { height: isEmoOn ? "52%" : "auto" }]}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={95}
+        >
+            {image && (
+                <View style={styles.sendImageContainerMain}>
 
-         <SimpleLineIcons name="emotsmile" size={24} color="#595959" style={styles.icon}/>
+                    <View style={styles.sendImageContainer}>
+                        <Image source={{ uri: image }}
+                            style={{ height: 100, width: 100, borderRadius: 5, margin: 5 }}
+                        />
 
-         </Pressable>
-        
-        <TextInput 
-        style={styles.input}
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Type here....."
-        />
-        
-        <Feather name="camera" size={24} color="#595959" style={styles.icon} />
-        <MaterialCommunityIcons name="microphone-outline" size={24} color="#595959" style={styles.icon} />
-      </View>
-      <Pressable onPress={OnPrs}style={styles.buttonContainer}>
-      {message ? <Ionicons name="send" size={18} color="white" /> : <AntDesign name="plus" size={22} color="white" />}
-      </Pressable>
-        </View>
-        {shouldShowAttach && (  <AttachSection /> ) }
+                        <Pressable onPress={() => setImage(null)}>
+                            <Ionicons
+                                name="close-circle-outline"
+                                size={25}
+                                color="black"
+                            />
+                        </Pressable>
+                    </View>
 
-        {isEmoOn && (<EmojiSelector onEmojiSelected={emoji => setMessage((curentMessage) => curentMessage + emoji)}
-        columns={8}
-        showSectionTitles= {false}
-        showSearchBar={false}
-        showTabs={true}
-        />)}
+                    <View
+                        style={{
+                            height: 5,
+                            borderRadius: 10,
+                            backgroundColor: '#ff7518',
+                            width: `${progress * 100}%`,
+                        }}
+                    />
 
-    </KeyboardAvoidingView>
-  )
-}
+                </View>
+            )}
+
+            <View style={styles.row}>
+                <View style={styles.inputContainer}>
+
+                    <Pressable onPress={() => {
+                        setEmoOn((currentValue) => !currentValue)
+                        setShouldShowAttach(false);
+                    }}>
+                        <SimpleLineIcons name="emotsmile" size={24} color="#595959" style={styles.icon} />
+                    </Pressable>
+
+                    <TextInput
+                        style={styles.input}
+                        value={message}
+                        onChangeText={setMessage}
+                        placeholder="Type here....."
+                    />
+
+                    <Pressable onPress={takePhoto}>
+                        <Feather
+                            name="camera"
+                            size={24}
+                            color="#595959"
+                            style={styles.icon}
+                        />
+                    </Pressable>
+
+                    <MaterialCommunityIcons name="microphone-outline" size={24} color="#595959" style={styles.icon} />
+                </View>
+
+                <Pressable onPress={OnPrs} style={styles.buttonContainer}>
+                    {message || image ? (
+                        <Ionicons name="send" size={18} color="white" />
+                    ) : (
+                        <AntDesign name="plus" size={22} color="white" />
+                    )}
+                </Pressable>
+            </View>
+
+            {shouldShowAttach && (<AttachSection setImage={setImage} />)}
+
+            {isEmoOn &&
+                (<EmojiSelector
+                    onEmojiSelected={emoji => setMessage((curentMessage) => curentMessage + emoji)}
+                    columns={8}
+                    showSectionTitles={false}
+                    showSearchBar={false}
+                    showTabs={true}
+                />)
+            }
+        </KeyboardAvoidingView>
+    )
+};
 
 const styles = StyleSheet.create({
     root: {
         padding: 10,
     },
-    row:{
+    row: {
         flexDirection: 'row',
     },
     inputContainer: {
@@ -119,7 +264,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     icon: {
-        marginHorizontal: 5, 
+        marginHorizontal: 5,
 
     },
     buttonContainer: {
@@ -129,9 +274,18 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-
+    },
+    sendImageContainer: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
 
     },
+    sendImageContainerMain: {
+        marginVertical: 7,
+        borderRadius: 5,
+        backgroundColor: '#FAF9F6'
+    }
 
 
 

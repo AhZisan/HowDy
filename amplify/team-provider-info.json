@@ -9,11 +9,24 @@
       "UnauthRoleName": "amplify-howdy-staging-112501-unauthRole",
       "StackName": "amplify-howdy-staging-112501",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:235847695468:stack/amplify-howdy-staging-112501/83858d10-4a20-11ed-8bf9-0a9dbee35cbe",
-      "AmplifyAppId": "dhtq31e1j1yps"
+      "AmplifyAppId": "dhtq31e1j1yps",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-howdy-staging-112501-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
         "HowDy": {}
+      },
+      "function": {
+        "HowDyPostConfirmation": {
+          "deploymentBucketName": "amplify-howdy-staging-112501-deployment",
+          "s3Key": "amplify-builds/HowDyPostConfirmation-4835675266736b335a45-build.zip"
+        }
+      },
+      "api": {
+        "HowDy": {}
+      },
+      "storage": {
+        "s3howdystorage12482015": {}
       }
     }
   }
