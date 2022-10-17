@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: 'row',
     padding: 10,
-    height: 180,
+    height: 170,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     backgroundColor: 'white',
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 80,
-    marginTop: 4
+    borderWidth: 5,
+    borderColor: '#ff7518',
 
   },
 
