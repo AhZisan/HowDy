@@ -16,17 +16,14 @@
       "auth": {
         "HowDy": {}
       },
+      "storage": {
+        "s3howdystorage12482015": {}
+      },
       "function": {
         "HowDyPostConfirmation": {
           "deploymentBucketName": "amplify-howdy-staging-112501-deployment",
           "s3Key": "amplify-builds/HowDyPostConfirmation-4835675266736b335a45-build.zip"
         }
-      },
-      "api": {
-        "HowDy": {}
-      },
-      "storage": {
-        "s3howdystorage12482015": {}
       }
     }
   }
